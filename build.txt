@@ -1,0 +1,3 @@
+displayName = 扫雷
+author = 米更米
+version = 0.1
