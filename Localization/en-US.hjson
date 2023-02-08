@@ -35,12 +35,12 @@ Mods: {
 			Preview: Open the preview or not
 			Breakable: 
 				'''
-				Creating a play area will destroy the terrain
+				Generating a play area will destroy the terrain
 				Click to change
 				'''
 			Unbreakable:
 				'''
-				Terrain will stop creating a play area
+				Terrain will stop generating a play area
 				Click to change
 				'''
 		}
