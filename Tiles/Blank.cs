@@ -12,7 +12,7 @@ namespace Minesweeper.Tiles
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             // 插旗状态时不可操作
-            if (Main.tile[i, j].TileFrameY == 18)
+            if (Main.tile[i, j].TileFrameX == 18)
             {
                 return;
             }
@@ -56,7 +56,7 @@ namespace Minesweeper.Tiles
                         if (Main.tile[x, y].TileType == ModContent.TileType<Mine_Unknown>())
                         {
                             Tile tile = Main.tile[x, y];
-                            tile.TileFrameY = 18;
+                            tile.TileFrameX = 18;
                         }
                     }
                 }

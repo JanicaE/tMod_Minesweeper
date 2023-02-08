@@ -34,9 +34,16 @@ namespace Minesweeper
                          select p).Count();
 
             Tile tile = Main.tile[i, j];
-            tile.TileFrameY = (short)(count * 18);
+            tile.TileFrameX = (short)(count * 18);
 
             return count;
+        }
+
+        public static float MouseDistance()
+        {
+            Vector2 player = Main.LocalPlayer.Center;
+            Vector2 mouse = Main.MouseWorld;
+            return (mouse - player).Length();
         }
     }
 }

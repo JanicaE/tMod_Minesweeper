@@ -28,7 +28,7 @@ namespace Minesweeper.Items
             Item.useAnimation = 5;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.consumable = false;
-
+            
             Item.value = 0;
             Item.rare = ItemRarityID.Blue;
         }
@@ -38,11 +38,17 @@ namespace Minesweeper.Items
             int x = (int)Main.MouseWorld.X / 16;
             int y = (int)Main.MouseWorld.Y / 16;
             Tile tile = Main.tile[x, y];
+            // 限制使用范围
+            if (MyUtils.MouseDistance() > 150)
+            {
+                return false;
+            }
+                
             if (player.altFunctionUse == 0)  // 左键
             {
                 if (tile.TileType == ModContent.TileType<Blank_Known>())
                 {
-                    int num = tile.TileFrameY / 18;
+                    int num = tile.TileFrameX / 18;
                     Point[] points = {
                         new(x - 1, y - 1),
                         new(x - 1, y),
@@ -57,7 +63,7 @@ namespace Minesweeper.Items
                                 where 
                                     ((Main.tile[p].TileType == ModContent.TileType<Mine_Unknown>() ||
                                     Main.tile[p].TileType == ModContent.TileType<Blank_Unknown>()) &&
-                                    Main.tile[p].TileFrameY == 18) || 
+                                    Main.tile[p].TileFrameX == 18) || 
                                     Main.tile[p].TileType == ModContent.TileType<Mine_Known>()                                
                                 select p).Count();
                     if (count == num)
@@ -83,13 +89,13 @@ namespace Minesweeper.Items
                 if (tile.TileType == ModContent.TileType<Blank_Unknown>() ||
                     tile.TileType == ModContent.TileType<Mine_Unknown>())
                 {
-                    if (tile.TileFrameY == 18)
+                    if (tile.TileFrameX == 18)
                     {
-                        tile.TileFrameY = 0;
+                        tile.TileFrameX = 0;
                     }
-                    else if (tile.TileFrameY == 0)
+                    else if (tile.TileFrameX == 0)
                     {
-                        tile.TileFrameY = 18;
+                        tile.TileFrameX = 18;
                     }
                 }
             }            

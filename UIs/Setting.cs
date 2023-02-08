@@ -150,7 +150,7 @@ namespace Minesweeper.UIs
             Player player = Main.LocalPlayer;
             int Mine = 0;
             List<Point> point = new();
-            // 将地图内相关物块全部替换为未知空白物块
+
             for (int i = 0; i < Main.maxTilesX; i++)
             {
                 for (int j = 0; j < Main.maxTilesY; j++)
@@ -160,13 +160,14 @@ namespace Minesweeper.UIs
                         Main.tile[i, j].TileType == ModContent.TileType<Mine_Known>())
                     {
                         Mine++;
-                    }
-                    // 将区域各坐标存入数组
+                    }                    
                     if (MyUtils.MineTiles.Contains(Main.tile[i, j].TileType))
                     {
+                        // 替换物块
                         WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Unknown>());
                         Tile tile = Main.tile[i, j];
-                        tile.TileFrameY = 0;
+                        tile.TileFrameX = 0;
+                        // 将坐标存入数组
                         point.Add(new Point(i, j));
                     }
                 }
