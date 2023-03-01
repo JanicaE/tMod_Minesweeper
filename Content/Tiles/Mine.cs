@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Minesweeper.Tiles
+namespace Minesweeper.Content.Tiles
 {
     [Autoload(true)]
     internal class Mine_Unknown : MineTile

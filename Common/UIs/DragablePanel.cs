@@ -3,13 +3,13 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
-namespace Minesweeper.UIs
+namespace Minesweeper.Common.UIs
 {
     // 允许拖动面板
     // 确保面板在被拖到外面或屏幕大小调整时会反弹回边界
     // UIPanel不会阻止玩家在单击鼠标时使用项目
     public class DragablePanel : UIPanel
-    {        
+    {
         private Vector2 offset;  // 在拖动时存储与UIPanel左上角的偏移量        
         private bool dragging;  // 检查当前是否正在拖动面板的标志
 
@@ -63,12 +63,12 @@ namespace Minesweeper.UIs
             }
 
             // 检查可拖动UIPanel是否在父UIElement矩形之外
-			// 通过这样做和一些简单的数学运算，如果用户调整窗口大小或以其他方式更改分辨率，我们可以将面板重新贴靠在屏幕上
+            // 通过这样做和一些简单的数学运算，如果用户调整窗口大小或以其他方式更改分辨率，我们可以将面板重新贴靠在屏幕上
             var parentSpace = Parent.GetDimensions().ToRectangle();
             if (!GetDimensions().ToRectangle().Intersects(parentSpace))
             {
-                Left.Pixels = Utils.Clamp(Left.Pixels, 0, parentSpace.Right - Width.Pixels);
-                Top.Pixels = Utils.Clamp(Top.Pixels, 0, parentSpace.Bottom - Height.Pixels);
+                Left.Pixels = Terraria.Utils.Clamp(Left.Pixels, 0, parentSpace.Right - Width.Pixels);
+                Top.Pixels = Terraria.Utils.Clamp(Top.Pixels, 0, parentSpace.Bottom - Height.Pixels);
                 // 强制UI系统再次执行定位数学运算
                 Recalculate();
             }

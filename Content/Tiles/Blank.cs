@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Minesweeper.Players;
+using Minesweeper.Common.Utils;
+using Minesweeper.Common.Players;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Minesweeper.Tiles
+namespace Minesweeper.Content.Tiles
 {
     [Autoload(true)]
     internal class Blank_Unknown : MineTile
@@ -18,22 +19,13 @@ namespace Minesweeper.Tiles
             }
 
             // 计算雷数并给物块标上数字
-            WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Known>());            
+            WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Known>());
             int count = MyUtils.MinesCount(i, j);
 
             // 如果周围8格没有雷则打开它们
             if (count == 0)
             {
-                Point[] points = {
-                    new(i - 1, j - 1),
-                    new(i - 1, j),
-                    new(i - 1, j + 1),
-                    new(i, j - 1),
-                    new(i, j + 1),
-                    new(i + 1, j - 1),
-                    new(i + 1, j),
-                    new(i + 1, j + 1)
-                };
+                Point[] points = MyUtils.RoundPoints(i, j);
                 foreach (Point p in points)
                 {
                     if (Main.tile[p].TileType == ModContent.TileType<Blank_Unknown>())
@@ -64,8 +56,8 @@ namespace Minesweeper.Tiles
                 for (int d = 0; d < 30; d++)
                 {
                     Dust.NewDust(player.position, player.width, player.height, DustID.FireworkFountain_Red, 0f, -10f);
-                }                
-            }            
+                }
+            }
         }
     }
 

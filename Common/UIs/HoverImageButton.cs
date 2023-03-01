@@ -3,7 +3,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
-namespace Minesweeper.UIs
+namespace Minesweeper.Common.UIs
 {
     // 允许按钮在悬停时显示文本工具提示
     internal class HoverImageButton : UIImageButton

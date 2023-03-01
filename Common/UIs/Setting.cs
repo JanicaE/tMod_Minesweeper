@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minesweeper.Players;
-using Minesweeper.Tiles;
+using Minesweeper.Common.Utils;
+using Minesweeper.Common.Players;
+using Minesweeper.Content.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +12,18 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Minesweeper.UIs
+namespace Minesweeper.Common.UIs
 {
     internal class Setting : UIState
     {
         public static bool Visible = false;
 
         private DragablePanel panel = new();
-        private HoverImageButton close = new(ModContent.Request<Texture2D>("Minesweeper/UIs/Close"), Language.GetTextValue("Mods.Minesweeper.UITips.Close"));
-        private HoverImageButton clear = new(ModContent.Request<Texture2D>("Minesweeper/UIs/Clear"), Language.GetTextValue("Mods.Minesweeper.UITips.Clear"));
-        private HoverImageButton reset = new(ModContent.Request<Texture2D>("Minesweeper/UIs/Reset"), Language.GetTextValue("Mods.Minesweeper.UITips.Reset"));
-        private HoverImageButton preview = new(ModContent.Request<Texture2D>("Minesweeper/UIs/Preview"), Language.GetTextValue("Mods.Minesweeper.UITips.Preview"));
-        private HoverImageButton breakable = new(ModContent.Request<Texture2D>("Minesweeper/UIs/Unbreakable"), Language.GetTextValue("Mods.Minesweeper.UITips.Unbreakable"));
+        private HoverImageButton close = new(MyUtils.GetTexture("Close"), Language.GetTextValue("Mods.Minesweeper.UITips.Close"));
+        private HoverImageButton clear = new(MyUtils.GetTexture("Clear"), Language.GetTextValue("Mods.Minesweeper.UITips.Clear"));
+        private HoverImageButton reset = new(MyUtils.GetTexture("Reset"), Language.GetTextValue("Mods.Minesweeper.UITips.Reset"));
+        private HoverImageButton preview = new(MyUtils.GetTexture("Preview"), Language.GetTextValue("Mods.Minesweeper.UITips.Preview"));
+        private HoverImageButton breakable = new(MyUtils.GetTexture("Unbreakable_UI"), Language.GetTextValue("Mods.Minesweeper.UITips.Unbreakable"));
         private UIText title = new(Language.GetTextValue("Mods.Minesweeper.UITips.Title"));
         private UIText tipWidth = new(Language.GetTextValue("Mods.Minesweeper.UITips.Width") + ":");
         private UIText tipHeight = new(Language.GetTextValue("Mods.Minesweeper.UITips.Height") + ":");
@@ -32,7 +33,7 @@ namespace Minesweeper.UIs
         private WriteTextBox MineNumSet = new("");
 
         public override void OnInitialize()
-        {            
+        {
             panel.Width.Set(300f, 0f);
             panel.Height.Set(300f, 0f);
             panel.HAlign = 0.5f;
@@ -72,8 +73,8 @@ namespace Minesweeper.UIs
             breakable.HAlign = 0.8f;
             breakable.VAlign = 0.9f;
             breakable.OnClick += Breakable_OnClick;
-            panel.Append(breakable);            
-            
+            panel.Append(breakable);
+
             title.Width.Set(80f, 0f);
             title.Height.Set(20f, 0f);
             title.HAlign = 0f;
@@ -107,21 +108,21 @@ namespace Minesweeper.UIs
             mapWidthSet.VAlign = 0.2f;
             mapWidthSet.TextHAlign = 0f;
             panel.Append(mapWidthSet);
-            
+
             mapHeightSet.Width.Set(100f, 0f);
             mapHeightSet.Height.Set(20f, 0f);
             mapHeightSet.HAlign = 0.6f;
             mapHeightSet.VAlign = 0.4f;
             mapHeightSet.TextHAlign = 0f;
             panel.Append(mapHeightSet);
-            
+
             MineNumSet.Width.Set(100f, 0f);
             MineNumSet.Height.Set(20f, 0f);
             MineNumSet.HAlign = 0.6f;
             MineNumSet.VAlign = 0.6f;
             MineNumSet.TextHAlign = 0f;
             panel.Append(MineNumSet);
-        }               
+        }
 
         private void Close_OnClick(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -160,14 +161,14 @@ namespace Minesweeper.UIs
                         Main.tile[i, j].TileType == ModContent.TileType<Mine_Known>())
                     {
                         Mine++;
-                    }                    
+                    }
                     if (MyUtils.MineTiles.Contains(Main.tile[i, j].TileType))
                     {
                         // 替换物块
                         WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Unknown>());
                         Tile tile = Main.tile[i, j];
                         tile.TileFrameX = 0;
-                        // 将坐标存入数组
+                        // 将坐标存入数组，保存当前雷区的位置
                         point.Add(new Point(i, j));
                     }
                 }
@@ -190,7 +191,7 @@ namespace Minesweeper.UIs
                 MineSet = false;
             }
 
-            player.GetModPlayer<MinePlayer>().Remain = point.Count -  Mine;
+            player.GetModPlayer<MinePlayer>().Remain = point.Count - Mine;
         }
 
         private void Preview_OnClick(UIMouseEvent evt, UIElement listeningElement)
@@ -200,13 +201,13 @@ namespace Minesweeper.UIs
             // 切换UI图标
             if (player.GetModPlayer<MinePlayer>().Preview)
             {
-                preview.SetImage(ModContent.Request<Texture2D>("Minesweeper/UIs/Preview"));
+                preview.SetImage(MyUtils.GetTexture("Preview"));
                 preview.Width.Set(30f, 0f);
                 preview.Height.Set(30f, 0f);
             }
             else
             {
-                preview.SetImage(ModContent.Request<Texture2D>("Minesweeper/UIs/NoPreview"));
+                preview.SetImage(MyUtils.GetTexture("NoPreview"));
                 preview.Width.Set(30f, 0f);
                 preview.Height.Set(30f, 0f);
             }
@@ -219,14 +220,14 @@ namespace Minesweeper.UIs
             // 切换UI图标
             if (player.GetModPlayer<MinePlayer>().Breakable)
             {
-                breakable.SetImage(ModContent.Request<Texture2D>("Minesweeper/UIs/Breakable"));
+                breakable.SetImage(MyUtils.GetTexture("Breakable_UI"));
                 breakable.Width.Set(30f, 0f);
                 breakable.Height.Set(30f, 0f);
                 breakable.hoverText = Language.GetTextValue("Mods.Minesweeper.UITips.Breakable");
             }
             else
             {
-                breakable.SetImage(ModContent.Request<Texture2D>("Minesweeper/UIs/Unbreakable"));
+                breakable.SetImage(MyUtils.GetTexture("Unbreakable_UI"));
                 breakable.Width.Set(30f, 0f);
                 breakable.Height.Set(30f, 0f);
                 breakable.hoverText = Language.GetTextValue("Mods.Minesweeper.UITips.Unbreakable");
@@ -257,7 +258,6 @@ namespace Minesweeper.UIs
             }
         }
     }
-
 
     internal class SettingUISystem : ModSystem
     {
@@ -304,7 +304,7 @@ namespace Minesweeper.UIs
                     // 绘制层的类型
                     InterfaceScaleType.UI)
                 );
-            }        
+            }
         }
     }
 }

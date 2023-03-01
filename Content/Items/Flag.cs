@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Minesweeper.Tiles;
+using Minesweeper.Common.Utils;
+using Minesweeper.Content.Tiles;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Minesweeper.Items
+namespace Minesweeper.Content.Items
 {
     internal class Flag : ModItem
     {
@@ -28,7 +29,7 @@ namespace Minesweeper.Items
             Item.useAnimation = 5;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.consumable = false;
-            
+
             Item.value = 0;
             Item.rare = ItemRarityID.Blue;
         }
@@ -38,34 +39,27 @@ namespace Minesweeper.Items
             int x = (int)Main.MouseWorld.X / 16;
             int y = (int)Main.MouseWorld.Y / 16;
             Tile tile = Main.tile[x, y];
+
             // 限制使用范围
             if (MyUtils.MouseDistance() > 150)
             {
                 return false;
             }
-                
+
             if (player.altFunctionUse == 0)  // 左键
             {
+                // 已打开的空白区域
                 if (tile.TileType == ModContent.TileType<Blank_Known>())
                 {
                     int num = tile.TileFrameX / 18;
-                    Point[] points = {
-                        new(x - 1, y - 1),
-                        new(x - 1, y),
-                        new(x - 1, y + 1),
-                        new(x, y - 1),
-                        new(x, y + 1),
-                        new(x + 1, y - 1),
-                        new(x + 1, y),
-                        new(x + 1, y + 1)
-                    };
+                    Point[] points = MyUtils.RoundPoints(x, y);
                     int count = (from Point p in points
-                                where 
-                                    ((Main.tile[p].TileType == ModContent.TileType<Mine_Unknown>() ||
-                                    Main.tile[p].TileType == ModContent.TileType<Blank_Unknown>()) &&
-                                    Main.tile[p].TileFrameX == 18) || 
-                                    Main.tile[p].TileType == ModContent.TileType<Mine_Known>()                                
-                                select p).Count();
+                                 where
+                                     (Main.tile[p].TileType == ModContent.TileType<Mine_Unknown>() ||
+                                     Main.tile[p].TileType == ModContent.TileType<Blank_Unknown>()) &&
+                                     Main.tile[p].TileFrameX == 18 ||
+                                     Main.tile[p].TileType == ModContent.TileType<Mine_Known>()
+                                 select p).Count();
                     if (count == num)
                     {
                         foreach (Point p in points)
@@ -78,6 +72,7 @@ namespace Minesweeper.Items
                         }
                     }
                 }
+                // 未打开的区域
                 else if (tile.TileType == ModContent.TileType<Blank_Unknown>() ||
                         tile.TileType == ModContent.TileType<Mine_Unknown>())
                 {
@@ -86,9 +81,11 @@ namespace Minesweeper.Items
             }
             else if (player.altFunctionUse == 2)  // 右键
             {
+                // 未打开的区域
                 if (tile.TileType == ModContent.TileType<Blank_Unknown>() ||
                     tile.TileType == ModContent.TileType<Mine_Unknown>())
                 {
+                    // 切换插旗与未插旗状态
                     if (tile.TileFrameX == 18)
                     {
                         tile.TileFrameX = 0;
@@ -98,7 +95,7 @@ namespace Minesweeper.Items
                         tile.TileFrameX = 18;
                     }
                 }
-            }            
+            }
             return true;
         }
 

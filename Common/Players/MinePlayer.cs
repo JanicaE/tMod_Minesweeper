@@ -1,9 +1,9 @@
-﻿using Minesweeper.Tiles;
+﻿using Minesweeper.Content.Tiles;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace Minesweeper.Players
+namespace Minesweeper.Common.Players
 {
     internal class MinePlayer : ModPlayer
     {

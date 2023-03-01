@@ -1,19 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Minesweeper.Common.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Minesweeper.UIs
+namespace Minesweeper.Common.UIs
 {
     internal class Box
     {
         public Texture2D textureT;
         public Texture2D textureF;
         public Rectangle rectangle;
-
+                
         public Box(Texture2D textureT, Texture2D textureF, Rectangle rectangle)
         {
             this.textureT = textureT;
@@ -21,19 +22,25 @@ namespace Minesweeper.UIs
             this.rectangle = rectangle;
         }
 
-        public static void newBox(Texture2D textureT, Texture2D textureF, Rectangle rectangle)
+        /// <summary>
+        /// 方框绘制
+        /// </summary>
+        /// <param name="textureT"></param>
+        /// <param name="textureF"></param>
+        /// <param name="rectangle">绘制的位置，用物块坐标表示</param>
+        public static void NewBox(Texture2D textureT, Texture2D textureF, Rectangle rectangle)
         {
             Box box = new(textureT, textureF, rectangle);
             BoxSystem.box = box;
         }
 
-        public static void clear()
+        public static void Clear()
         {
             BoxSystem.box = null;
         }
     }
 
-    internal class BoxSystem : ModSystem 
+    internal class BoxSystem : ModSystem
     {
         public static Box box;
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -49,7 +56,7 @@ namespace Minesweeper.UIs
                     // 匿名方法
                     delegate
                     {
-                        if(box != null)
+                        if (box != null)
                         {
                             int x = box.rectangle.X;
                             int y = box.rectangle.Y;
@@ -60,6 +67,7 @@ namespace Minesweeper.UIs
                             {
                                 for (int j = y; j < y + height; j++)
                                 {
+                                    // 根据物块情况选择该物块内绘制的内容
                                     if (Main.tile[i, j].HasTile && !MyUtils.MineTiles.Contains(Main.tile[i, j].TileType))
                                     {
                                         texture = box.textureF;
@@ -79,8 +87,8 @@ namespace Minesweeper.UIs
                                                         0f);
                                 }
                             }
-                            
-                        }                        
+
+                        }
                         return true;
                     },
                     // 绘制层的类型

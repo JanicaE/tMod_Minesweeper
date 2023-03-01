@@ -2,11 +2,11 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Minesweeper.Tiles
+namespace Minesweeper.Content.Tiles
 {
     [Autoload(false)]
     internal class MineTile : ModTile
-    {        
+    {
         public override void SetStaticDefaults()
         {
             Main.tileSolid[Type] = false;  // 是否为实体

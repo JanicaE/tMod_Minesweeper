@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minesweeper.Players;
-using Minesweeper.Tiles;
-using Minesweeper.UIs;
+using Minesweeper.Common.Players;
+using Minesweeper.Common.UIs;
+using Minesweeper.Common.Utils;
+using Minesweeper.Content.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,14 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Minesweeper.Items
+namespace Minesweeper.Content.Items
 {
     internal class Start : ModItem
     {
         private int MapWidth;
         private int MapHeight;
         private int MineNum;
-        private bool Breakable;        
+        private bool Breakable;
 
         public override void SetStaticDefaults()
         {
@@ -44,7 +45,7 @@ namespace Minesweeper.Items
             Item.value = 0;
             Item.rare = ItemRarityID.Blue;
         }
-                
+
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 0)  // 左键
@@ -71,7 +72,7 @@ namespace Minesweeper.Items
                     Main.NewText(Language.GetTextValue("Mods.Minesweeper.Items.Start.MainText.Over"), new Color(255, 0, 0));
                     return true;
                 }
-                
+
                 // 先生成一片空白区域
                 for (int i = x; i < x + MapWidth; i++)
                 {
@@ -157,23 +158,23 @@ namespace Minesweeper.Items
             int x = (int)Main.MouseWorld.X / 16;
             int y = (int)Main.MouseWorld.Y / 16;
             Rectangle rectangle = new(x, y, MapWidth, MapHeight);
-            Texture2D textureT = ModContent.Request<Texture2D>("Minesweeper/Items/Normal").Value;
+            Texture2D textureT = MyUtils.GetTexture("Normal_pre").Value;
             Texture2D textureF;
             if (!Breakable)
             {
-                textureF = ModContent.Request<Texture2D>("Minesweeper/Items/Unbreakable").Value;
+                textureF = MyUtils.GetTexture("Unbreakable_pre").Value;
             }
             else
             {
-                textureF = ModContent.Request<Texture2D>("Minesweeper/Items/Breakable").Value;
+                textureF = MyUtils.GetTexture("Breakable_pre").Value;
             }
             if (player.GetModPlayer<MinePlayer>().Preview)
             {
-                Box.newBox(textureT, textureF, rectangle);
+                Box.NewBox(textureT, textureF, rectangle);
             }
             else
             {
-                Box.clear();
+                Box.Clear();
             }
         }
 
@@ -185,7 +186,7 @@ namespace Minesweeper.Items
             Breakable = player.GetModPlayer<MinePlayer>().Breakable;
             if (Main.LocalPlayer.HeldItem.type != Type)
             {
-                Box.clear();
+                Box.Clear();
             }
         }
 
@@ -193,8 +194,8 @@ namespace Minesweeper.Items
         {
             // 物品信息中显示未打开的空白区域数目
             Player player = Main.LocalPlayer;
-            TooltipLine line = new(Mod, "Remain", Language.GetTextValue("Mods.Minesweeper.Items.Start.Line") 
-                                                + ":" 
+            TooltipLine line = new(Mod, "Remain", Language.GetTextValue("Mods.Minesweeper.Items.Start.Line")
+                                                + ":"
                                                 + player.GetModPlayer<MinePlayer>().Remain.ToString());
             tooltips.Add(line);
         }
@@ -207,7 +208,7 @@ namespace Minesweeper.Items
                 .AddIngredient(ItemID.DirtBlock, 10)
                 .AddTile(TileID.WorkBenches)
                 .Register();
-        }        
+        }
 
         private bool HasTile()
         {
@@ -217,7 +218,7 @@ namespace Minesweeper.Items
             {
                 for (int j = 0; j < MapHeight; j++)
                 {
-                    if ((Main.tile[x + i, y + j].HasTile && !MyUtils.MineTiles.Contains(Main.tile[x + i, y + j].TileType) && !Breakable))
+                    if (Main.tile[x + i, y + j].HasTile && !MyUtils.MineTiles.Contains(Main.tile[x + i, y + j].TileType) && !Breakable)
                     {
                         return true;
                     }
