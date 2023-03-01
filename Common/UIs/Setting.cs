@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Minesweeper.Common.Utils;
 using Minesweeper.Common.Players;
 using Minesweeper.Content.Tiles;
 using System;
@@ -19,11 +17,11 @@ namespace Minesweeper.Common.UIs
         public static bool Visible = false;
 
         private DragablePanel panel = new();
-        private HoverImageButton close = new(MyUtils.GetTexture("Close"), Language.GetTextValue("Mods.Minesweeper.UITips.Close"));
-        private HoverImageButton clear = new(MyUtils.GetTexture("Clear"), Language.GetTextValue("Mods.Minesweeper.UITips.Clear"));
-        private HoverImageButton reset = new(MyUtils.GetTexture("Reset"), Language.GetTextValue("Mods.Minesweeper.UITips.Reset"));
-        private HoverImageButton preview = new(MyUtils.GetTexture("Preview"), Language.GetTextValue("Mods.Minesweeper.UITips.Preview"));
-        private HoverImageButton breakable = new(MyUtils.GetTexture("Unbreakable_UI"), Language.GetTextValue("Mods.Minesweeper.UITips.Unbreakable"));
+        private HoverImageButton close = new(GetTexture("Close"), Language.GetTextValue("Mods.Minesweeper.UITips.Close"));
+        private HoverImageButton clear = new(GetTexture("Clear"), Language.GetTextValue("Mods.Minesweeper.UITips.Clear"));
+        private HoverImageButton reset = new(GetTexture("Reset"), Language.GetTextValue("Mods.Minesweeper.UITips.Reset"));
+        private HoverImageButton preview = new(GetTexture("Preview"), Language.GetTextValue("Mods.Minesweeper.UITips.Preview"));
+        private HoverImageButton breakable = new(GetTexture("Unbreakable_UI"), Language.GetTextValue("Mods.Minesweeper.UITips.Unbreakable"));
         private UIText title = new(Language.GetTextValue("Mods.Minesweeper.UITips.Title"));
         private UIText tipWidth = new(Language.GetTextValue("Mods.Minesweeper.UITips.Width") + ":");
         private UIText tipHeight = new(Language.GetTextValue("Mods.Minesweeper.UITips.Height") + ":");
@@ -137,7 +135,7 @@ namespace Minesweeper.Common.UIs
             {
                 for (int j = 0; j < Main.maxTilesY; j++)
                 {
-                    if (MyUtils.MineTiles.Contains(Main.tile[i, j].TileType))
+                    if (MineTiles.Contains(Main.tile[i, j].TileType))
                     {
                         WorldGen.KillTile(i, j);
                     }
@@ -162,7 +160,7 @@ namespace Minesweeper.Common.UIs
                     {
                         Mine++;
                     }
-                    if (MyUtils.MineTiles.Contains(Main.tile[i, j].TileType))
+                    if (MineTiles.Contains(Main.tile[i, j].TileType))
                     {
                         // 替换物块
                         WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Unknown>());
@@ -201,13 +199,13 @@ namespace Minesweeper.Common.UIs
             // 切换UI图标
             if (player.GetModPlayer<MinePlayer>().Preview)
             {
-                preview.SetImage(MyUtils.GetTexture("Preview"));
+                preview.SetImage(GetTexture("Preview"));
                 preview.Width.Set(30f, 0f);
                 preview.Height.Set(30f, 0f);
             }
             else
             {
-                preview.SetImage(MyUtils.GetTexture("NoPreview"));
+                preview.SetImage(GetTexture("NoPreview"));
                 preview.Width.Set(30f, 0f);
                 preview.Height.Set(30f, 0f);
             }
@@ -220,14 +218,14 @@ namespace Minesweeper.Common.UIs
             // 切换UI图标
             if (player.GetModPlayer<MinePlayer>().Breakable)
             {
-                breakable.SetImage(MyUtils.GetTexture("Breakable_UI"));
+                breakable.SetImage(GetTexture("Breakable_UI"));
                 breakable.Width.Set(30f, 0f);
                 breakable.Height.Set(30f, 0f);
                 breakable.hoverText = Language.GetTextValue("Mods.Minesweeper.UITips.Breakable");
             }
             else
             {
-                breakable.SetImage(MyUtils.GetTexture("Unbreakable_UI"));
+                breakable.SetImage(GetTexture("Unbreakable_UI"));
                 breakable.Width.Set(30f, 0f);
                 breakable.Height.Set(30f, 0f);
                 breakable.hoverText = Language.GetTextValue("Mods.Minesweeper.UITips.Unbreakable");

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Minesweeper.Common.Utils;
 using Minesweeper.Content.Tiles;
 using System.Linq;
 using Terraria;
@@ -41,7 +40,7 @@ namespace Minesweeper.Content.Items
             Tile tile = Main.tile[x, y];
 
             // 限制使用范围
-            if (MyUtils.MouseDistance() > 150)
+            if (MouseDistance() > 150)
             {
                 return false;
             }
@@ -54,7 +53,7 @@ namespace Minesweeper.Content.Items
                 {
                     // 获取物块上的数字
                     int num = tile.TileFrameX / 18;  
-                    Point[] points = MyUtils.RoundPoints(x, y);
+                    Point[] points = RoundPoints(x, y);
                     // 计算周围8格内插旗的数量（以及已经炸了的雷）
                     int count = (from Point p in points
                                  where

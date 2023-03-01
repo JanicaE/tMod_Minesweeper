@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Minesweeper.Common.Utils;
 using Minesweeper.Common.Players;
 using Terraria;
 using Terraria.ID;
@@ -20,12 +19,12 @@ namespace Minesweeper.Content.Tiles
 
             // 计算雷数并给物块标上数字
             WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Known>());
-            int count = MyUtils.MinesCount(i, j);
+            int count = MinesCount(i, j);
 
             // 如果周围8格没有雷则打开它们
             if (count == 0)
             {
-                Point[] points = MyUtils.RoundPoints(i, j);
+                Point[] points = RoundPoints(i, j);
                 foreach (Point p in points)
                 {
                     if (Main.tile[p].TileType == ModContent.TileType<Blank_Unknown>())

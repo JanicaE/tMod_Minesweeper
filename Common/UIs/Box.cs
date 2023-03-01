@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minesweeper.Common.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -68,7 +67,7 @@ namespace Minesweeper.Common.UIs
                                 for (int j = y; j < y + height; j++)
                                 {
                                     // 根据物块情况选择该物块内绘制的内容
-                                    if (Main.tile[i, j].HasTile && !MyUtils.MineTiles.Contains(Main.tile[i, j].TileType))
+                                    if (Main.tile[i, j].HasTile && !MineTiles.Contains(Main.tile[i, j].TileType))
                                     {
                                         texture = box.textureF;
                                     }

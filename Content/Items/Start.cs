@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Minesweeper.Common.Players;
 using Minesweeper.Common.UIs;
-using Minesweeper.Common.Utils;
 using Minesweeper.Content.Tiles;
 using System;
 using System.Collections.Generic;
@@ -115,22 +114,22 @@ namespace Minesweeper.Content.Items
                 {
                     if (Main.tile[i, y - 1].TileType == ModContent.TileType<Blank_Known>())
                     {
-                        MyUtils.MinesCount(i, y - 1);
+                        MinesCount(i, y - 1);
                     }
                     if (Main.tile[i, y + MapHeight].TileType == ModContent.TileType<Blank_Known>())
                     {
-                        MyUtils.MinesCount(i, y + MapHeight);
+                        MinesCount(i, y + MapHeight);
                     }
                 }
                 for (int i = y; i < y + MapWidth; i++)
                 {
                     if (Main.tile[x - 1, i].TileType == ModContent.TileType<Blank_Known>())
                     {
-                        MyUtils.MinesCount(x - 1, i);
+                        MinesCount(x - 1, i);
                     }
                     if (Main.tile[x + MapWidth, i].TileType == ModContent.TileType<Blank_Known>())
                     {
-                        MyUtils.MinesCount(x + MapWidth, i);
+                        MinesCount(x + MapWidth, i);
                     }
                 }
             }
@@ -161,16 +160,16 @@ namespace Minesweeper.Content.Items
             int y = (int)Main.MouseWorld.Y / 16;
             Rectangle rectangle = new(x, y, MapWidth, MapHeight);
             // 无物块区域的预览样式
-            Texture2D textureT = MyUtils.GetTexture("Normal_pre").Value;
+            Texture2D textureT = GetTexture("Normal_pre").Value;
             // 有物块区域的预览样式
             Texture2D textureF;
             if (!Breakable)
             {
-                textureF = MyUtils.GetTexture("Unbreakable_pre").Value;
+                textureF = GetTexture("Unbreakable_pre").Value;
             }
             else
             {
-                textureF = MyUtils.GetTexture("Breakable_pre").Value;
+                textureF = GetTexture("Breakable_pre").Value;
             }
             // 如果开启预览，就生成一个Box对象，对应绘制一个方框
             if (player.GetModPlayer<MinePlayer>().Preview)
@@ -230,7 +229,7 @@ namespace Minesweeper.Content.Items
             {
                 for (int j = 0; j < MapHeight; j++)
                 {
-                    if (Main.tile[x + i, y + j].HasTile && !MyUtils.MineTiles.Contains(Main.tile[x + i, y + j].TileType) && !Breakable)
+                    if (Main.tile[x + i, y + j].HasTile && !MineTiles.Contains(Main.tile[x + i, y + j].TileType) && !Breakable)
                     {
                         return true;
                     }
