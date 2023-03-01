@@ -46,13 +46,16 @@ namespace Minesweeper.Content.Items
                 return false;
             }
 
-            if (player.altFunctionUse == 0)  // 左键
+            // 左键
+            if (player.altFunctionUse == 0)  
             {
                 // 已打开的空白区域
                 if (tile.TileType == ModContent.TileType<Blank_Known>())
                 {
-                    int num = tile.TileFrameX / 18;
+                    // 获取物块上的数字
+                    int num = tile.TileFrameX / 18;  
                     Point[] points = MyUtils.RoundPoints(x, y);
+                    // 计算周围8格内插旗的数量（以及已经炸了的雷）
                     int count = (from Point p in points
                                  where
                                      (Main.tile[p].TileType == ModContent.TileType<Mine_Unknown>() ||
@@ -62,6 +65,8 @@ namespace Minesweeper.Content.Items
                                  select p).Count();
                     if (count == num)
                     {
+                        // 打开其余未打开的区域
+                        // 插旗区域会判定打开失败，这里就不用加条件了
                         foreach (Point p in points)
                         {
                             if (Main.tile[p].TileType == ModContent.TileType<Mine_Unknown>() ||
@@ -79,7 +84,8 @@ namespace Minesweeper.Content.Items
                     WorldGen.KillTile(x, y, fail: true);
                 }
             }
-            else if (player.altFunctionUse == 2)  // 右键
+            // 右键
+            else if (player.altFunctionUse == 2) 
             {
                 // 未打开的区域
                 if (tile.TileType == ModContent.TileType<Blank_Unknown>() ||

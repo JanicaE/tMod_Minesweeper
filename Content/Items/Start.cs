@@ -48,7 +48,8 @@ namespace Minesweeper.Content.Items
 
         public override bool CanUseItem(Player player)
         {
-            if (player.altFunctionUse == 0)  // 左键
+            // 左键
+            if (player.altFunctionUse == 0)  
             {
                 int x = (int)Main.MouseWorld.X / 16;
                 int y = (int)Main.MouseWorld.Y / 16;
@@ -133,7 +134,8 @@ namespace Minesweeper.Content.Items
                     }
                 }
             }
-            else if (player.altFunctionUse == 2)  // 右键
+            // 右键
+            else if (player.altFunctionUse == 2)  
             {
                 // 切换设置界面打开关闭状态
                 if (Setting.Visible)
@@ -158,7 +160,9 @@ namespace Minesweeper.Content.Items
             int x = (int)Main.MouseWorld.X / 16;
             int y = (int)Main.MouseWorld.Y / 16;
             Rectangle rectangle = new(x, y, MapWidth, MapHeight);
+            // 无物块区域的预览样式
             Texture2D textureT = MyUtils.GetTexture("Normal_pre").Value;
+            // 有物块区域的预览样式
             Texture2D textureF;
             if (!Breakable)
             {
@@ -168,10 +172,12 @@ namespace Minesweeper.Content.Items
             {
                 textureF = MyUtils.GetTexture("Breakable_pre").Value;
             }
+            // 如果开启预览，就生成一个Box对象，对应绘制一个方框
             if (player.GetModPlayer<MinePlayer>().Preview)
             {
                 Box.NewBox(textureT, textureF, rectangle);
             }
+            // 反之则清空Box对象
             else
             {
                 Box.Clear();
@@ -180,10 +186,13 @@ namespace Minesweeper.Content.Items
 
         public override void UpdateInventory(Player player)
         {
+            // 实时从玩家处更新参数
             MapWidth = player.GetModPlayer<MinePlayer>().MapWidth;
             MapHeight = player.GetModPlayer<MinePlayer>().MapHeight;
             MineNum = player.GetModPlayer<MinePlayer>().MineNum;
             Breakable = player.GetModPlayer<MinePlayer>().Breakable;
+
+            // 当前没有手持该物品时也清空Box对象
             if (Main.LocalPlayer.HeldItem.type != Type)
             {
                 Box.Clear();
@@ -210,6 +219,9 @@ namespace Minesweeper.Content.Items
                 .Register();
         }
 
+        /// <summary>
+        /// 在设置为Unbreakable的情况下，判断区域内是否有mod相关物块以外的物块
+        /// </summary>
         private bool HasTile()
         {
             int x = (int)Main.MouseWorld.X / 16;
