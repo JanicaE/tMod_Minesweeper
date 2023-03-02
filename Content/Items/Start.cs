@@ -160,16 +160,16 @@ namespace Minesweeper.Content.Items
             int y = (int)Main.MouseWorld.Y / 16;
             Rectangle rectangle = new(x, y, MapWidth, MapHeight);
             // 无物块区域的预览样式
-            Texture2D textureT = GetTexture("Normal_pre").Value;
+            Texture2D textureT = GetTexture("Normal_prev").Value;
             // 有物块区域的预览样式
             Texture2D textureF;
             if (!Breakable)
             {
-                textureF = GetTexture("Unbreakable_pre").Value;
+                textureF = GetTexture("Unbreakable_prev").Value;
             }
             else
             {
-                textureF = GetTexture("Breakable_pre").Value;
+                textureF = GetTexture("Breakable_prev").Value;
             }
             // 如果开启预览，就生成一个Box对象，对应绘制一个方框
             if (player.GetModPlayer<MinePlayer>().Preview)
