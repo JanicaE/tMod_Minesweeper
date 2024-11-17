@@ -2,6 +2,7 @@
 using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 
 namespace Minesweeper.Common.UIs
 {
@@ -9,11 +10,10 @@ namespace Minesweeper.Common.UIs
     internal class HoverImageButton : UIImageButton
     {
         // 悬停时将显示的工具提示文本
-        public string hoverText;
+        public LocalizedText hoverText;
 
-        public HoverImageButton(Asset<Texture2D> texture, string hoverText) : base(texture)
+        public HoverImageButton(Asset<Texture2D> texture) : base(texture)
         {
-            this.hoverText = hoverText;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -24,7 +24,7 @@ namespace Minesweeper.Common.UIs
 
             // 当鼠标悬停在当前UIElement上时，IsMouse悬停变为真
             if (IsMouseHovering)
-                Main.hoverItemName = hoverText;
+                Main.hoverItemName = hoverText.ToString();
         }
     }
 }

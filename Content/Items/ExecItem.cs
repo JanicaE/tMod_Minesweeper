@@ -13,22 +13,12 @@ using Terraria.ModLoader;
 
 namespace Minesweeper.Content.Items
 {
-    internal class Start : ModItem
+    internal class ExecItem : ModItem
     {
         private int MapWidth;
         private int MapHeight;
         private int MineNum;
         private bool Breakable;
-
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Minesweeper.exe");
-            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "扫雷.exe");
-            Tooltip.SetDefault("Leftclick to create a game field\n" +
-                                "rightclick to open the setting interface");
-            Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "左键创建一片游戏区域\n" +
-                                "右键打开设置界面");
-        }
 
         public override void SetDefaults()
         {
@@ -57,19 +47,19 @@ namespace Minesweeper.Content.Items
                 // 设置为不可破坏地形且目标区域内存在除扫雷以外的物块时                
                 if (HasTile())
                 {
-                    Main.NewText(Language.GetTextValue("Mods.Minesweeper.Items.Start.MainText.False"), new Color(255, 0, 0));
+                    Main.NewText(Language.GetText("Mods.Minesweeper.Items.ExecItem.MainText.False"), new Color(255, 0, 0));
                     return true;
                 }
                 // 宽或高为0时
                 if (MapWidth * MapHeight == 0)
                 {
-                    Main.NewText(Language.GetTextValue("Mods.Minesweeper.Items.Start.MainText.Zero"), new Color(255, 0, 0));
+                    Main.NewText(Language.GetText("Mods.Minesweeper.Items.ExecItem.MainText.Zero"), new Color(255, 0, 0));
                     return true;
                 }
                 // 雷数大于区域面积时
                 if (MineNum > MapWidth * MapHeight)
                 {
-                    Main.NewText(Language.GetTextValue("Mods.Minesweeper.Items.Start.MainText.Over"), new Color(255, 0, 0));
+                    Main.NewText(Language.GetText("Mods.Minesweeper.Items.ExecItem.MainText.Over"), new Color(255, 0, 0));
                     return true;
                 }
 
@@ -202,9 +192,7 @@ namespace Minesweeper.Content.Items
         {
             // 物品信息中显示未打开的空白区域数目
             Player player = Main.LocalPlayer;
-            TooltipLine line = new(Mod, "Remain", Language.GetTextValue("Mods.Minesweeper.Items.Start.Line")
-                                                + ":"
-                                                + player.GetModPlayer<MinePlayer>().Remain.ToString());
+            TooltipLine line = new(Mod, "Remain", $"{Language.GetText("Mods.Minesweeper.Items.ExecItem.Line")}:{player.GetModPlayer<MinePlayer>().Remain}");
             tooltips.Add(line);
         }
 
@@ -212,8 +200,6 @@ namespace Minesweeper.Content.Items
         {
             CreateRecipe()
                 .AddIngredient(ItemID.Grenade, 5)
-                .AddIngredient(ItemID.Wire, 5)
-                .AddIngredient(ItemID.DirtBlock, 10)
                 .AddTile(TileID.WorkBenches)
                 .Register();
         }

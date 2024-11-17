@@ -10,14 +10,6 @@ namespace Minesweeper.Content.Items
 {
     internal class Flag : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Minesweeping Tool");
-            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "扫雷工具");
-            Tooltip.SetDefault("Use it if you want flaging");
-            Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "想插旗的话就用它吧");
-        }
-
         public override void SetDefaults()
         {
             Item.width = 16;

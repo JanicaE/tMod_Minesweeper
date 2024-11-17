@@ -14,19 +14,19 @@ namespace Minesweeper.Common.Utils
         /// Minesweeper相关物块
         /// </summary>
         public static int[] MineTiles =
-        {
+        [
             ModContent.TileType<Blank_Known>(),
             ModContent.TileType<Blank_Unknown>(),
             ModContent.TileType<Mine_Known>(),
             ModContent.TileType<Mine_Unknown>(),
-        };
+        ];
 
         /// <summary>
         /// 返回周围8个位置坐标的数组
         /// </summary>
         public static Point[] RoundPoints(int i, int j)
         {
-            Point[] points = {
+            Point[] points = [
                 new(i - 1, j - 1),
                 new(i - 1, j),
                 new(i - 1, j + 1),
@@ -35,7 +35,7 @@ namespace Minesweeper.Common.Utils
                 new(i + 1, j - 1),
                 new(i + 1, j),
                 new(i + 1, j + 1)
-            };
+            ];
             return points;
         }
 

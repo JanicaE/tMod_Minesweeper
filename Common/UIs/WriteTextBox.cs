@@ -10,16 +10,16 @@ namespace Minesweeper.Common.UIs
     {
         private bool Enabled = false;
         private string text;
-        private bool[] inputFlag = {
+        private readonly bool[] inputFlag = [
             false, false, false, false, false,
             false, false, false, false, false,
             false
-        };
+        ];
 
         /// <summary>
         /// 支持的按键
         /// </summary>
-        private readonly Keys[] inputKey = {
+        private readonly Keys[] inputKey = [
             Keys.NumPad0,
             Keys.NumPad1,
             Keys.NumPad2,
@@ -31,7 +31,7 @@ namespace Minesweeper.Common.UIs
             Keys.NumPad8,
             Keys.NumPad9,
             Keys.Back,
-        };
+        ];
 
         public WriteTextBox(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
         {

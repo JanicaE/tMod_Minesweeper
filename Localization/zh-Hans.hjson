@@ -1,16 +1,15 @@
-
 Mods: {
 	Minesweeper: {
 		Items: {
-			Start: {
+			ExecItem: {
 				DisplayName: 扫雷.exe
 				Tooltip:
 					'''
 					左键创建一片游戏区域
-                    右键打开设置界面
+					右键打开设置界面
 					'''
-				
 				Line: 未打开的非雷区数量
+
 				MainText: {
 					False: 目标范围内存在物块
 					Zero: 宽或高不能为0
@@ -33,7 +32,7 @@ Mods: {
 			Clear: 清空游戏区域
 			Reset: 重置游戏区域
 			Preview: 打开或关闭预览
-			Breakable: 
+			Breakable:
 				'''
 				创建游戏区域将会破坏地形
 				点击更改

@@ -23,7 +23,7 @@ namespace Minesweeper.Common.Players
             Breakable = false;
         }
 
-        public override void OnEnterWorld(Player player)
+        public override void OnEnterWorld()
         {
             Remain = 0;
             for (int i = 0; i < Main.maxTilesX; i++)

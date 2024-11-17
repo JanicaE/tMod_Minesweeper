@@ -18,5 +18,10 @@ namespace Minesweeper.Content.Tiles
             MinPick = 9999;  // 最小镐力
             AddMapEntry(new Color(192, 192, 192));  // 在地图上的颜色
         }
+
+        public override bool CreateDust(int i, int j, ref int type)
+        {
+            return false;
+        }
     }
 }

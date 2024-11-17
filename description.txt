@@ -1,7 +1,7 @@
 让你在泰拉瑞亚中玩到扫雷。
 
 包含两个物品：
-扫雷.exe（配方：手榴弹 * 5 + 电线 * 5 + 土块 * 10）
+扫雷.exe（配方：手榴弹 * 5）
 	用于设置及生成游戏区域
 扫雷工具（配方：任意木材 * 2 + 丝绸 * 1）
 	用于实际游玩
@@ -10,7 +10,7 @@
 Let you play Minesweeper in Terraria.
 
 Contains two items:
-Minesweeper.exe (Recipe: grenade * 5 + wire * 5 + dirt * 10)
+Minesweeper.exe (Recipe: grenade * 5)
 	For setting and generate the play area
 Minesweeping Tool (Recipe: any wood * 2 + silk * 1)
 	For actual play

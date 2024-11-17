@@ -1,16 +1,15 @@
-
 Mods: {
 	Minesweeper: {
 		Items: {
-			Start: {
+			ExecItem: {
 				DisplayName: Minesweeper.exe
 				Tooltip:
 					'''
 					Leftclick to create a play area
-                    rightclick to open the setting interface
+					Rightclick to open the setting interface
 					'''
-				
 				Line: Number of unopened non-mined areas
+
 				MainText: {
 					False: Tiles exist within the target area.
 					Zero: Width or height can't be zero.
@@ -29,11 +28,11 @@ Mods: {
 			Height: Height
 			MineNum: Number of Mines
 			Title: Setting
-			Close: Close 
+			Close: Close
 			Clear: Clear the play area
 			Reset: Reset the play area
 			Preview: Open the preview or not
-			Breakable: 
+			Breakable:
 				'''
 				Generating a play area will destroy the terrain
 				Click to change
