@@ -18,7 +18,7 @@ namespace Minesweeper.Content.Items
         private int MapWidth;
         private int MapHeight;
         private int MineNum;
-        private bool Breakable;
+        //private bool Breakable;
 
         public override void SetDefaults()
         {
@@ -153,7 +153,7 @@ namespace Minesweeper.Content.Items
             Texture2D textureT = GetTexture("Normal_prev").Value;
             // 有物块区域的预览样式
             Texture2D textureF;
-            if (!Breakable)
+            if (!Config.BlockBreakable)
             {
                 textureF = GetTexture("Unbreakable_prev").Value;
             }
@@ -165,6 +165,11 @@ namespace Minesweeper.Content.Items
             if (player.GetModPlayer<MinePlayer>().Preview)
             {
                 Box.NewBox(textureT, textureF, rectangle);
+#if DEBUG
+                //Debug，查看当前TileType
+                int type = Main.tile[x, y].TileType;
+                Main.NewText(type);
+#endif
             }
             // 反之则清空Box对象
             else
@@ -179,7 +184,7 @@ namespace Minesweeper.Content.Items
             MapWidth = player.GetModPlayer<MinePlayer>().MapWidth;
             MapHeight = player.GetModPlayer<MinePlayer>().MapHeight;
             MineNum = player.GetModPlayer<MinePlayer>().MineNum;
-            Breakable = player.GetModPlayer<MinePlayer>().Breakable;
+            //Breakable = player.GetModPlayer<MinePlayer>().Breakable;
 
             // 当前没有手持该物品时也清空Box对象
             if (Main.LocalPlayer.HeldItem.type != Type)
@@ -215,7 +220,7 @@ namespace Minesweeper.Content.Items
             {
                 for (int j = 0; j < MapHeight; j++)
                 {
-                    if (Main.tile[x + i, y + j].HasTile && !MineTiles.Contains(Main.tile[x + i, y + j].TileType) && !Breakable)
+                    if (Main.tile[x + i, y + j].HasTile && !MineTiles.Contains(Main.tile[x + i, y + j].TileType) && !Config.BlockBreakable)
                     {
                         return true;
                     }

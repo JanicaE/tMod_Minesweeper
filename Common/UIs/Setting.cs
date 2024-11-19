@@ -62,21 +62,23 @@ namespace Minesweeper.Common.UIs
             reset.hoverText = Language.GetText("Mods.Minesweeper.UITips.Reset");
             panel.Append(reset);
 
-            preview.Width.Set(30f, 0f);
-            preview.Height.Set(30f, 0f);
-            preview.HAlign = 0.6f;
-            preview.VAlign = 0.9f;
-            preview.OnLeftClick += Preview_OnLeftClick;
-            preview.hoverText = Language.GetText("Mods.Minesweeper.UITips.Preview");
-            panel.Append(preview);
+            // preview固定为true
+            //preview.Width.Set(30f, 0f);
+            //preview.Height.Set(30f, 0f);
+            //preview.HAlign = 0.6f;
+            //preview.VAlign = 0.9f;
+            //preview.OnLeftClick += Preview_OnLeftClick;
+            //preview.hoverText = Language.GetText("Mods.Minesweeper.UITips.Preview");
+            //panel.Append(preview);
 
-            breakable.Width.Set(30f, 0f);
-            breakable.Height.Set(30f, 0f);
-            breakable.HAlign = 0.8f;
-            breakable.VAlign = 0.9f;
-            breakable.OnLeftClick += Breakable_OnLeftClick;
-            breakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Unbreakable");
-            panel.Append(breakable);
+            // 这部分配置转到ModConfig中
+            //breakable.Width.Set(30f, 0f);
+            //breakable.Height.Set(30f, 0f);
+            //breakable.HAlign = 0.8f;
+            //breakable.VAlign = 0.9f;
+            //breakable.OnLeftClick += Breakable_OnLeftClick;
+            //breakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Unbreakable");
+            //panel.Append(breakable);
 
             title.Width.Set(80f, 0f);
             title.Height.Set(20f, 0f);

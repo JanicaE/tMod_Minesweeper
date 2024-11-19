@@ -1,5 +1,16 @@
 Mods: {
 	Minesweeper: {
+		Configs: {
+			CommonConfig: {
+				DisplayName: 基本配置
+
+				BlockBreakable: {
+					Label: 方块可破坏
+					Tooltip: 创建游戏区域会破坏原版方块
+				}
+			}
+		}
+
 		Items: {
 			ExecItem: {
 				DisplayName: 扫雷.exe

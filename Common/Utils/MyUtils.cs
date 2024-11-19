@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Minesweeper.Common.Configs;
 using Minesweeper.Content.Tiles;
 using ReLogic.Content;
 using System.Linq;
@@ -11,9 +12,14 @@ namespace Minesweeper.Common.Utils
     internal static class MyUtils
     {
         /// <summary>
+        /// 获取配置
+        /// </summary>
+        public static CommonConfig Config;
+
+        /// <summary>
         /// Minesweeper相关物块
         /// </summary>
-        public static int[] MineTiles =
+        public static int[] MineTiles =>
         [
             ModContent.TileType<Blank_Known>(),
             ModContent.TileType<Blank_Unknown>(),

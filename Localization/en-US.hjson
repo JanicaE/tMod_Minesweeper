@@ -1,5 +1,16 @@
 Mods: {
 	Minesweeper: {
+		Configs: {
+			CommonConfig: {
+				DisplayName: Main Config
+
+				BlockBreakable: {
+					Label: Block Breakable
+					Tooltip: Generating a play area will destroy vanilla blocks
+				}
+			}
+		}
+
 		Items: {
 			ExecItem: {
 				DisplayName: Minesweeper.exe
