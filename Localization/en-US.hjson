@@ -38,6 +38,7 @@ Mods: {
 			Width: Width
 			Height: Height
 			MineNum: Number of Mines
+			MineDensity: Density of Mines(%)
 			Title: Setting
 			Close: Close
 			Clear: Clear the play area
@@ -53,6 +54,8 @@ Mods: {
 				Terrain will stop generating a play area
 				Click to change
 				'''
+			FixedMap: Set fixed width and height
+			FreeMap: Select the size freely
 		}
 	}
 }

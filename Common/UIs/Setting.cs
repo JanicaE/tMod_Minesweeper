@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Minesweeper.Common.Players;
+using Minesweeper.Common.Utils;
 using Minesweeper.Content.Tiles;
 using System;
 using System.Collections.Generic;
@@ -16,127 +17,252 @@ namespace Minesweeper.Common.UIs
     {
         public static bool Visible = false;
 
+        #region property
+
+        /// <summary>
+        /// 主面板
+        /// </summary>
         private readonly DragablePanel panel = new();
-        private readonly HoverImageButton close = new(GetTexture("Close"));
-        private readonly HoverImageButton clear = new(GetTexture("Clear"));
-        private readonly HoverImageButton reset = new(GetTexture("Reset"));
-        private readonly HoverImageButton preview = new(GetTexture("Preview"));
-        private readonly HoverImageButton breakable = new(GetTexture("Unbreakable_UI"));
-        private readonly UIText title = new(Language.GetText("Mods.Minesweeper.UITips.Title"));
-        private readonly UIText tipWidth = new(Language.GetText("Mods.Minesweeper.UITips.Width"));
-        private readonly UIText tipHeight = new(Language.GetText("Mods.Minesweeper.UITips.Height"));
-        private readonly UIText tipMine = new(Language.GetText("Mods.Minesweeper.UITips.MineNum"));
-        private readonly WriteTextBox mapWidthSet = new("");
-        private readonly WriteTextBox mapHeightSet = new("");
-        private readonly WriteTextBox mineNumSet = new("");
+        /// <summary>
+        /// 按钮：关闭
+        /// </summary>
+        private readonly HoverImageButton buttonClose = new(GetTexture("Close"));
+        /// <summary>
+        /// 按钮：清空
+        /// </summary>
+        private readonly HoverImageButton buttonClear = new(GetTexture("Clear"));
+        /// <summary>
+        /// 按钮：重置
+        /// </summary>
+        private readonly HoverImageButton buttonReset = new(GetTexture("Reset"));
+        /// <summary>
+        /// 按钮：设置预览（弃用）
+        /// </summary>
+        private readonly HoverImageButton buttonPreview = new(GetTexture("Preview"));
+        /// <summary>
+        /// 按钮：设置可破坏（弃用）
+        /// </summary>
+        private readonly HoverImageButton buttonBreakable = new(GetTexture("Unbreakable_UI"));
+        /// <summary>
+        /// 按钮：固定大小
+        /// </summary>
+        private readonly HoverImageButton buttonFixedMap = new(GetTexture("Close"));//todo
+        /// <summary>
+        /// 按钮：自由大小
+        /// </summary>
+        private readonly HoverImageButton buttonFreeMap = new(GetTexture("Close"));//todo
+        /// <summary>
+        /// 标签：标题
+        /// </summary>
+        private readonly UIText labelTitle = new(Language.GetText("Mods.Minesweeper.UITips.Title"));
+        /// <summary>
+        /// 标签：宽度
+        /// </summary>
+        private readonly UIText labelWidth = new(Language.GetText("Mods.Minesweeper.UITips.Width"));
+        /// <summary>
+        /// 标签：高度
+        /// </summary>
+        private readonly UIText labelHeight = new(Language.GetText("Mods.Minesweeper.UITips.Height"));
+        /// <summary>
+        /// 标签：雷数
+        /// </summary>
+        private readonly UIText labelMineNum = new(Language.GetText("Mods.Minesweeper.UITips.MineNum"));
+        /// <summary>
+        /// 标签：密度
+        /// </summary>
+        private readonly UIText labelMineDensity = new(Language.GetText("Mods.Minesweeper.UITips.MineDensity"));
+        /// <summary>
+        /// 输入框：设置宽度
+        /// </summary>
+        private readonly WriteTextBox textboxSetMapWidth = new("");
+        /// <summary>
+        /// 输入框：设置高度
+        /// </summary>
+        private readonly WriteTextBox textboxSetMapHeight = new("");
+        /// <summary>
+        /// 输入框：设置雷数
+        /// </summary>
+        private readonly WriteTextBox textboxSetMineNum = new("");
+        /// <summary>
+        /// 输入框：设置密度
+        /// </summary>
+        private readonly WriteTextBox textboxSetMineDensity = new("");
+
+        #endregion
 
         public override void OnInitialize()
         {
+            #region panel
             panel.Width.Set(300f, 0f);
             panel.Height.Set(300f, 0f);
             panel.HAlign = 0.5f;
             panel.VAlign = 0.5f;
             Append(panel);
+            #endregion
 
-            close.Width.Set(20f, 0f);
-            close.Height.Set(20f, 0f);
-            close.HAlign = 1f;
-            close.VAlign = 0f;
-            close.OnLeftClick += Close_OnLeftClick;
-            close.hoverText = Language.GetText("Mods.Minesweeper.UITips.Close");
-            panel.Append(close);
+            #region buttonClose
+            buttonClose.Width.Set(20f, 0f);
+            buttonClose.Height.Set(20f, 0f);
+            buttonClose.HAlign = 1f;
+            buttonClose.VAlign = 0f;
+            buttonClose.OnLeftClick += ButtonClose_OnLeftClick;
+            buttonClose.hoverText = Language.GetText("Mods.Minesweeper.UITips.Close");
+            panel.Append(buttonClose);
+            #endregion
 
-            clear.Width.Set(30f, 0f);
-            clear.Height.Set(30f, 0f);
-            clear.HAlign = 0.2f;
-            clear.VAlign = 0.9f;
-            clear.OnLeftClick += Clear_OnLeftClick;
-            clear.hoverText = Language.GetText("Mods.Minesweeper.UITips.Clear");
-            panel.Append(clear);
+            #region buttonClear
+            buttonClear.Width.Set(30f, 0f);
+            buttonClear.Height.Set(30f, 0f);
+            buttonClear.HAlign = 0.2f;
+            buttonClear.VAlign = 0.9f;
+            buttonClear.OnLeftClick += ButtonClear_OnLeftClick;
+            buttonClear.hoverText = Language.GetText("Mods.Minesweeper.UITips.Clear");
+            panel.Append(buttonClear);
+            #endregion
 
-            reset.Width.Set(30f, 0f);
-            reset.Height.Set(30f, 0f);
-            reset.HAlign = 0.4f;
-            reset.VAlign = 0.9f;
-            reset.OnLeftClick += Reset_OnLeftClick;
-            reset.hoverText = Language.GetText("Mods.Minesweeper.UITips.Reset");
-            panel.Append(reset);
+            #region buttonReset
+            buttonReset.Width.Set(30f, 0f);
+            buttonReset.Height.Set(30f, 0f);
+            buttonReset.HAlign = 0.4f;
+            buttonReset.VAlign = 0.9f;
+            buttonReset.OnLeftClick += ButtonReset_OnLeftClick;
+            buttonReset.hoverText = Language.GetText("Mods.Minesweeper.UITips.Reset");
+            panel.Append(buttonReset);
+            #endregion
 
-            // preview固定为true
-            //preview.Width.Set(30f, 0f);
-            //preview.Height.Set(30f, 0f);
-            //preview.HAlign = 0.6f;
-            //preview.VAlign = 0.9f;
-            //preview.OnLeftClick += Preview_OnLeftClick;
-            //preview.hoverText = Language.GetText("Mods.Minesweeper.UITips.Preview");
-            //panel.Append(preview);
+            #region buttonPreview(弃用)
+            /* Preview固定为true
+            //buttonPreview.Width.Set(30f, 0f);
+            //buttonPreview.Height.Set(30f, 0f);
+            //buttonPreview.HAlign = 0.6f;
+            //buttonPreview.VAlign = 0.9f;
+            //buttonPreview.OnLeftClick += Preview_OnLeftClick;
+            //buttonPreview.hoverText = Language.GetText("Mods.Minesweeper.UITips.Preview");
+            //panel.Append(buttonPreview);
+            */
+            #endregion
 
-            // 这部分配置转到ModConfig中
-            //breakable.Width.Set(30f, 0f);
-            //breakable.Height.Set(30f, 0f);
-            //breakable.HAlign = 0.8f;
-            //breakable.VAlign = 0.9f;
-            //breakable.OnLeftClick += Breakable_OnLeftClick;
-            //breakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Unbreakable");
-            //panel.Append(breakable);
+            #region buttonBreakable(弃用)
+            /* Breakable配置转到ModConfig中
+            //buttonBreakable.Width.Set(30f, 0f);
+            //buttonBreakable.Height.Set(30f, 0f);
+            //buttonBreakable.HAlign = 0.8f;
+            //buttonBreakable.VAlign = 0.9f;
+            //buttonBreakable.OnLeftClick += Breakable_OnLeftClick;
+            //buttonBreakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Unbreakable");
+            //panel.Append(buttonBreakable);
+            */
+            #endregion
 
-            title.Width.Set(80f, 0f);
-            title.Height.Set(20f, 0f);
-            title.HAlign = 0f;
-            title.VAlign = 0f;
-            panel.Append(title);
+            #region buttonFixedMap
+            buttonFixedMap.Width.Set(30f, 0f);
+            buttonFixedMap.Height.Set(30f, 0f);
+            buttonFixedMap.HAlign = 0.1f;
+            buttonFixedMap.VAlign = 0.1f;
+            buttonFixedMap.OnLeftClick += ButtonFixedMap_OnLeftClick;
+            buttonFixedMap.hoverText = Language.GetText("Mods.Minesweeper.UITips.FixedMap");
+            panel.Append(buttonFixedMap);
+            #endregion
 
-            tipWidth.Width.Set(80f, 0f);
-            tipWidth.Height.Set(20f, 0f);
-            tipWidth.HAlign = 0f;
-            tipWidth.VAlign = 0.2f;
-            tipWidth.TextOriginX = 0f;
-            panel.Append(tipWidth);
+            #region buttonFreeMap
+            buttonFreeMap.Width.Set(30f, 0f);
+            buttonFreeMap.Height.Set(30f, 0f);
+            buttonFreeMap.HAlign = 0.3f;
+            buttonFreeMap.VAlign = 0.1f;
+            buttonFreeMap.OnLeftClick += ButtonFreeMap_OnLeftClick; ;
+            buttonFreeMap.hoverText = Language.GetText("Mods.Minesweeper.UITips.FreeMap");
+            panel.Append(buttonFreeMap);
+            #endregion
 
-            tipHeight.Width.Set(80f, 0f);
-            tipHeight.Height.Set(20f, 0f);
-            tipHeight.HAlign = 0f;
-            tipHeight.VAlign = 0.4f;
-            tipHeight.TextOriginX = 0f;
-            panel.Append(tipHeight);
+            #region labelTitle
+            labelTitle.Width.Set(80f, 0f);
+            labelTitle.Height.Set(20f, 0f);
+            labelTitle.HAlign = 0f;
+            labelTitle.VAlign = 0f;
+            panel.Append(labelTitle);
+            #endregion
 
-            tipMine.Width.Set(80f, 0f);
-            tipMine.Height.Set(20f, 0f);
-            tipMine.HAlign = 0f;
-            tipMine.VAlign = 0.6f;
-            tipMine.TextOriginX = 0f;
-            panel.Append(tipMine);
+            #region labelWidth
+            labelWidth.Width.Set(80f, 0f);
+            labelWidth.Height.Set(20f, 0f);
+            labelWidth.HAlign = 0f;
+            labelWidth.VAlign = 0.25f;
+            labelWidth.TextOriginX = 0f;
+            panel.Append(labelWidth);
+            #endregion
 
-            mapWidthSet.Width.Set(100f, 0f);
-            mapWidthSet.Height.Set(20f, 0f);
-            mapWidthSet.HAlign = 0.6f;
-            mapWidthSet.VAlign = 0.2f;
-            mapWidthSet.TextHAlign = 0f;
-            panel.Append(mapWidthSet);
+            #region labelHeight
+            labelHeight.Width.Set(80f, 0f);
+            labelHeight.Height.Set(20f, 0f);
+            labelHeight.HAlign = 0f;
+            labelHeight.VAlign = 0.45f;
+            labelHeight.TextOriginX = 0f;
+            panel.Append(labelHeight);
+            #endregion
 
-            mapHeightSet.Width.Set(100f, 0f);
-            mapHeightSet.Height.Set(20f, 0f);
-            mapHeightSet.HAlign = 0.6f;
-            mapHeightSet.VAlign = 0.4f;
-            mapHeightSet.TextHAlign = 0f;
-            panel.Append(mapHeightSet);
+            #region labelMineNum
+            labelMineNum.Width.Set(80f, 0f);
+            labelMineNum.Height.Set(20f, 0f);
+            labelMineNum.HAlign = 0f;
+            labelMineNum.VAlign = 0.65f;
+            labelMineNum.TextOriginX = 0f;
+            panel.Append(labelMineNum);
+            #endregion
 
-            mineNumSet.Width.Set(100f, 0f);
-            mineNumSet.Height.Set(20f, 0f);
-            mineNumSet.HAlign = 0.6f;
-            mineNumSet.VAlign = 0.6f;
-            mineNumSet.TextHAlign = 0f;
-            panel.Append(mineNumSet);
+            #region labelMineDensity
+            labelMineDensity.Width.Set(80f, 0f);
+            labelMineDensity.Height.Set(20f, 0f);
+            labelMineDensity.HAlign = 0f;
+            labelMineDensity.VAlign = 0.25f;
+            labelMineDensity.TextOriginX = 0f;
+            panel.Append(labelMineDensity);
+            #endregion
+
+            #region textboxSetMapWidth
+            textboxSetMapWidth.Width.Set(100f, 0f);
+            textboxSetMapWidth.Height.Set(20f, 0f);
+            textboxSetMapWidth.HAlign = 0.6f;
+            textboxSetMapWidth.VAlign = 0.25f;
+            textboxSetMapWidth.TextHAlign = 0f;
+            panel.Append(textboxSetMapWidth);
+            #endregion
+
+            #region textboxSetMapHeight
+            textboxSetMapHeight.Width.Set(100f, 0f);
+            textboxSetMapHeight.Height.Set(20f, 0f);
+            textboxSetMapHeight.HAlign = 0.6f;
+            textboxSetMapHeight.VAlign = 0.45f;
+            textboxSetMapHeight.TextHAlign = 0f;
+            panel.Append(textboxSetMapHeight);
+            #endregion
+
+            #region textboxSetMineNum
+            textboxSetMineNum.Width.Set(100f, 0f);
+            textboxSetMineNum.Height.Set(20f, 0f);
+            textboxSetMineNum.HAlign = 0.6f;
+            textboxSetMineNum.VAlign = 0.65f;
+            textboxSetMineNum.TextHAlign = 0f;
+            panel.Append(textboxSetMineNum);
+            #endregion
+
+            #region textboxSetMineDensity
+            textboxSetMineDensity.Width.Set(100f, 0f);
+            textboxSetMineDensity.Height.Set(20f, 0f);
+            textboxSetMineDensity.HAlign = 0.6f;
+            textboxSetMineDensity.VAlign = 0.25f;
+            textboxSetMineDensity.TextHAlign = 0f;
+            panel.Append(textboxSetMineDensity);
+            #endregion
         }
 
         #region 点击事件
 
-        private void Close_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
+        private void ButtonClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Visible = false;
         }
 
-        private void Clear_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
+        private void ButtonClear_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Player player = Main.LocalPlayer;
             for (int i = 0; i < Main.maxTilesX; i++)
@@ -152,7 +278,7 @@ namespace Minesweeper.Common.UIs
             player.GetModPlayer<MinePlayer>().Remain = 0;
         }
 
-        private void Reset_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
+        private void ButtonReset_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Player player = Main.LocalPlayer;
             int Mine = 0;
@@ -200,6 +326,8 @@ namespace Minesweeper.Common.UIs
             player.GetModPlayer<MinePlayer>().Remain = point.Count - Mine;
         }
 
+        #region 弃用
+
         private void Preview_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Player player = Main.LocalPlayer;
@@ -207,15 +335,15 @@ namespace Minesweeper.Common.UIs
             // 切换UI图标
             if (player.GetModPlayer<MinePlayer>().Preview)
             {
-                preview.SetImage(GetTexture("Preview"));
-                preview.Width.Set(30f, 0f);
-                preview.Height.Set(30f, 0f);
+                buttonPreview.SetImage(GetTexture("Preview"));
+                buttonPreview.Width.Set(30f, 0f);
+                buttonPreview.Height.Set(30f, 0f);
             }
             else
             {
-                preview.SetImage(GetTexture("NoPreview"));
-                preview.Width.Set(30f, 0f);
-                preview.Height.Set(30f, 0f);
+                buttonPreview.SetImage(GetTexture("NoPreview"));
+                buttonPreview.Width.Set(30f, 0f);
+                buttonPreview.Height.Set(30f, 0f);
             }
         }
 
@@ -226,18 +354,34 @@ namespace Minesweeper.Common.UIs
             // 切换UI图标
             if (player.GetModPlayer<MinePlayer>().Breakable)
             {
-                breakable.SetImage(GetTexture("Breakable_UI"));
-                breakable.Width.Set(30f, 0f);
-                breakable.Height.Set(30f, 0f);
-                breakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Breakable");
+                buttonBreakable.SetImage(GetTexture("Breakable_UI"));
+                buttonBreakable.Width.Set(30f, 0f);
+                buttonBreakable.Height.Set(30f, 0f);
+                buttonBreakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Breakable");
             }
             else
             {
-                breakable.SetImage(GetTexture("Unbreakable_UI"));
-                breakable.Width.Set(30f, 0f);
-                breakable.Height.Set(30f, 0f);
-                breakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Unbreakable");
+                buttonBreakable.SetImage(GetTexture("Unbreakable_UI"));
+                buttonBreakable.Width.Set(30f, 0f);
+                buttonBreakable.Height.Set(30f, 0f);
+                buttonBreakable.hoverText = Language.GetText("Mods.Minesweeper.UITips.Unbreakable");
             }
+        }
+
+        #endregion
+
+        private void ButtonFixedMap_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            Player player = Main.LocalPlayer;
+            player.GetModPlayer<MinePlayer>().FixedOrFree = MinePlayer.Fixed;
+            SetFixedOrFreeUI(MinePlayer.Fixed);
+        }
+
+        private void ButtonFreeMap_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            Player player = Main.LocalPlayer;
+            player.GetModPlayer<MinePlayer>().FixedOrFree = MinePlayer.Free;
+            SetFixedOrFreeUI(MinePlayer.Free);
         }
 
         #endregion
@@ -249,20 +393,53 @@ namespace Minesweeper.Common.UIs
             // 如果是初次进入世界，UI要先获取在player中保存的数据
             if (!player.GetModPlayer<MinePlayer>().UILoadData)
             {
-                mapWidthSet.Clear();
-                mapHeightSet.Clear();
-                mineNumSet.Clear();
-                mapWidthSet.Write(player.GetModPlayer<MinePlayer>().MapWidth.ToString());
-                mapHeightSet.Write(player.GetModPlayer<MinePlayer>().MapHeight.ToString());
-                mineNumSet.Write(player.GetModPlayer<MinePlayer>().MineNum.ToString());
+                textboxSetMapWidth.Clear();
+                textboxSetMapHeight.Clear();
+                textboxSetMineNum.Clear();
+                textboxSetMineDensity.Clear();
+                textboxSetMapWidth.Write(player.GetModPlayer<MinePlayer>().MapWidth.ToString());
+                textboxSetMapHeight.Write(player.GetModPlayer<MinePlayer>().MapHeight.ToString());
+                textboxSetMineNum.Write(player.GetModPlayer<MinePlayer>().MineNum.ToString());
+                textboxSetMineDensity.Write(player.GetModPlayer<MinePlayer>().MineDensity.ToString());
+
+                string mapMode = player.GetModPlayer<MinePlayer>().FixedOrFree.DefaultIfEmpty("Fixed");
+                SetFixedOrFreeUI(mapMode);
+                
                 player.GetModPlayer<MinePlayer>().UILoadData = true;
             }
             // 此后将UI中的数据同步至player中
             else
             {
-                player.GetModPlayer<MinePlayer>().MapWidth = mapWidthSet.Text.Length > 0 ? int.Parse(mapWidthSet.Text) : 0;
-                player.GetModPlayer<MinePlayer>().MapHeight = mapHeightSet.Text.Length > 0 ? int.Parse(mapHeightSet.Text) : 0;
-                player.GetModPlayer<MinePlayer>().MineNum = mineNumSet.Text.Length > 0 ? int.Parse(mineNumSet.Text) : 0;
+                player.GetModPlayer<MinePlayer>().MapWidth = textboxSetMapWidth.Text.Length > 0 ? int.Parse(textboxSetMapWidth.Text) : 0;
+                player.GetModPlayer<MinePlayer>().MapHeight = textboxSetMapHeight.Text.Length > 0 ? int.Parse(textboxSetMapHeight.Text) : 0;
+                player.GetModPlayer<MinePlayer>().MineNum = textboxSetMineNum.Text.Length > 0 ? int.Parse(textboxSetMineNum.Text) : 0;
+                player.GetModPlayer<MinePlayer>().MineDensity = textboxSetMineDensity.Text.Length > 0 ? int.Parse(textboxSetMineDensity.Text) : 0;
+            }
+        }
+
+        private void SetFixedOrFreeUI(string mode)
+        {
+            panel.RemoveChild(labelWidth);
+            panel.RemoveChild(labelHeight);
+            panel.RemoveChild(labelMineNum);
+            panel.RemoveChild(labelMineDensity);
+            panel.RemoveChild(textboxSetMapWidth);
+            panel.RemoveChild(textboxSetMapHeight);
+            panel.RemoveChild(textboxSetMineNum);
+            panel.RemoveChild(textboxSetMineDensity);
+            if (mode == "Fixed")
+            {
+                panel.Append(labelWidth);
+                panel.Append(labelHeight);
+                panel.Append(labelMineNum);
+                panel.Append(textboxSetMapWidth);
+                panel.Append(textboxSetMapHeight);
+                panel.Append(textboxSetMineNum);
+            }
+            else if (mode == "Free")
+            {
+                panel.Append(labelMineDensity);
+                panel.Append(textboxSetMineDensity);
             }
         }
     }

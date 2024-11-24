@@ -7,9 +7,14 @@ namespace Minesweeper.Common.Players
 {
     internal class MinePlayer : ModPlayer
     {
+        public static string Fixed = "Fixed";
+        public static string Free = "Free";
+
         public int MapWidth;
         public int MapHeight;
         public int MineNum;
+        public int MineDensity;
+        public string FixedOrFree;
 
         public bool Preview;
         public bool Breakable;
@@ -44,13 +49,28 @@ namespace Minesweeper.Common.Players
             tag["MapWidth"] = MapWidth;
             tag["MapHeight"] = MapHeight;
             tag["MineNum"] = MineNum;
+            tag["MineDensity"] = MineDensity;
+            tag["FixedOrFree"] = FixedOrFree;
         }
 
         public override void LoadData(TagCompound tag)
         {
-            MapWidth = (int)tag["MapWidth"];
-            MapHeight = (int)tag["MapHeight"];
-            MineNum = (int)tag["MineNum"];
+            try
+            {
+                MapWidth = (int)tag["MapWidth"];
+                MapHeight = (int)tag["MapHeight"];
+                MineNum = (int)tag["MineNum"];
+                MineDensity = (int)tag["MineDensity"];
+                FixedOrFree = (string)tag["FixedOrFree"];
+            }
+            catch 
+            {
+                MapWidth = 10;
+                MapHeight = 10;
+                MineNum = 10;
+                MineDensity = 10;
+                FixedOrFree = Fixed;
+            }            
         }
     }
 }

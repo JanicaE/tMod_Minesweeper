@@ -38,6 +38,7 @@ Mods: {
 			Width: 宽
 			Height: 高
 			MineNum: 雷数
+			MineDensity: 密度(%)
 			Title: 设置
 			Close: 关闭
 			Clear: 清空游戏区域
@@ -53,6 +54,8 @@ Mods: {
 				地形将会阻止游戏区域创建
 				点击更改
 				'''
+			FixedMap: 设置固定宽高
+			FreeMap: 自由框选大小
 		}
 	}
 }
