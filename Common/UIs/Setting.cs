@@ -373,15 +373,15 @@ namespace Minesweeper.Common.UIs
         private void ButtonFixedMap_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Player player = Main.LocalPlayer;
-            player.GetModPlayer<MinePlayer>().FixedOrFree = MinePlayer.Fixed;
-            SetFixedOrFreeUI(MinePlayer.Fixed);
+            player.GetModPlayer<MinePlayer>().MineGenerateType = EnumMineGenerateType.Fixed.ToString();
+            SetFixedOrFreeUI(EnumMineGenerateType.Fixed.ToString());
         }
 
         private void ButtonFreeMap_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Player player = Main.LocalPlayer;
-            player.GetModPlayer<MinePlayer>().FixedOrFree = MinePlayer.Free;
-            SetFixedOrFreeUI(MinePlayer.Free);
+            player.GetModPlayer<MinePlayer>().MineGenerateType = EnumMineGenerateType.Free.ToString();
+            SetFixedOrFreeUI(EnumMineGenerateType.Free.ToString());
         }
 
         #endregion
@@ -402,7 +402,7 @@ namespace Minesweeper.Common.UIs
                 textboxSetMineNum.Write(player.GetModPlayer<MinePlayer>().MineNum.ToString());
                 textboxSetMineDensity.Write(player.GetModPlayer<MinePlayer>().MineDensity.ToString());
 
-                string mapMode = player.GetModPlayer<MinePlayer>().FixedOrFree.DefaultIfEmpty("Fixed");
+                string mapMode = player.GetModPlayer<MinePlayer>().MineGenerateType.DefaultIfEmpty("Fixed");
                 SetFixedOrFreeUI(mapMode);
                 
                 player.GetModPlayer<MinePlayer>().UILoadData = true;

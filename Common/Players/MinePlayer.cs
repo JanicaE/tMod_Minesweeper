@@ -7,14 +7,11 @@ namespace Minesweeper.Common.Players
 {
     internal class MinePlayer : ModPlayer
     {
-        public static string Fixed = "Fixed";
-        public static string Free = "Free";
-
         public int MapWidth;
         public int MapHeight;
         public int MineNum;
         public int MineDensity;
-        public string FixedOrFree;
+        public string MineGenerateType;
 
         public bool Preview;
         public bool Breakable;
@@ -50,7 +47,7 @@ namespace Minesweeper.Common.Players
             tag["MapHeight"] = MapHeight;
             tag["MineNum"] = MineNum;
             tag["MineDensity"] = MineDensity;
-            tag["FixedOrFree"] = FixedOrFree;
+            tag["FixedOrFree"] = MineGenerateType;
         }
 
         public override void LoadData(TagCompound tag)
@@ -61,7 +58,7 @@ namespace Minesweeper.Common.Players
                 MapHeight = (int)tag["MapHeight"];
                 MineNum = (int)tag["MineNum"];
                 MineDensity = (int)tag["MineDensity"];
-                FixedOrFree = (string)tag["FixedOrFree"];
+                MineGenerateType = (string)tag["FixedOrFree"];
             }
             catch 
             {
@@ -69,8 +66,14 @@ namespace Minesweeper.Common.Players
                 MapHeight = 10;
                 MineNum = 10;
                 MineDensity = 10;
-                FixedOrFree = Fixed;
+                MineGenerateType = EnumMineGenerateType.Fixed.ToString();
             }            
         }
+    }
+
+    internal enum EnumMineGenerateType
+    {
+        Fixed,
+        Free
     }
 }
