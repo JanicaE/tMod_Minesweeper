@@ -6,20 +6,16 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Minesweeper.Common.UIs
+namespace Minesweeper.Common.Systems
 {
-    internal class Box
+    /// <summary>
+    /// 预览方框绘制系统（一次只能绘制一个）
+    /// </summary>
+    internal class DrawPreviewSystem : ModSystem
     {
-        public Texture2D textureT;
-        public Texture2D textureF;
-        public Rectangle rectangle;
-                
-        public Box(Texture2D textureT, Texture2D textureF, Rectangle rectangle)
-        {
-            this.textureT = textureT;
-            this.textureF = textureF;
-            this.rectangle = rectangle;
-        }
+        private static Texture2D textureT;
+        private static Texture2D textureF;
+        private static Rectangle? rectangle = null;
 
         /// <summary>
         /// 方框绘制
@@ -29,19 +25,19 @@ namespace Minesweeper.Common.UIs
         /// <param name="rectangle">绘制的位置，用物块坐标表示</param>
         public static void NewBox(Texture2D textureT, Texture2D textureF, Rectangle rectangle)
         {
-            Box box = new(textureT, textureF, rectangle);
-            BoxSystem.box = box;
+            DrawPreviewSystem.textureT = textureT;
+            DrawPreviewSystem.textureF = textureF;
+            DrawPreviewSystem.rectangle = rectangle;
         }
 
+        /// <summary>
+        /// 清除方框绘制
+        /// </summary>
         public static void Clear()
         {
-            BoxSystem.box = null;
+            rectangle = null;
         }
-    }
 
-    internal class BoxSystem : ModSystem
-    {
-        public static Box box;
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             // 寻找绘制层，并且返回那一层的索引
@@ -55,12 +51,12 @@ namespace Minesweeper.Common.UIs
                     // 匿名方法
                     delegate
                     {
-                        if (box != null)
+                        if (rectangle != null)
                         {
-                            int x = box.rectangle.X;
-                            int y = box.rectangle.Y;
-                            int width = box.rectangle.Width;
-                            int height = box.rectangle.Height;
+                            int x = rectangle.Value.X;
+                            int y = rectangle.Value.Y;
+                            int width = rectangle.Value.Width;
+                            int height = rectangle.Value.Height;
                             Texture2D texture;
                             for (int i = x; i < x + width; i++)
                             {
@@ -69,11 +65,11 @@ namespace Minesweeper.Common.UIs
                                     // 根据物块情况选择该物块内绘制的内容
                                     if (Main.tile[i, j].HasTile && !MineTiles.Contains(Main.tile[i, j].TileType))
                                     {
-                                        texture = box.textureF;
+                                        texture = textureF;
                                     }
                                     else
                                     {
-                                        texture = box.textureT;
+                                        texture = textureT;
                                     }
                                     Main.spriteBatch.Draw(texture,
                                                         new Vector2(i, j) * 16f - Main.screenPosition,

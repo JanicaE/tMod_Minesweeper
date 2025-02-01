@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Minesweeper.Content.Tiles;
+using Minesweeper.Common.UIs;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -18,6 +18,7 @@ namespace Minesweeper.Common.Systems
             }
             if (Main.inputText.IsKeyDown(Keys.Enter) && text != null)
             {
+                #region 处理输入命令
 #if DEBUG
                 // Debug，查看ModTileType
                 if (text.StartsWith("/modtiletype"))
@@ -29,7 +30,13 @@ namespace Minesweeper.Common.Systems
                     }
                     Main.NewText(typeStr);
                 }
+                // Debug，打开DebugUI
+                if (text.StartsWith("/debug"))
+                {
+                    DebugUI.Visible = !DebugUI.Visible;
+                }
 #endif
+                #endregion
                 text = null;
             }
         }

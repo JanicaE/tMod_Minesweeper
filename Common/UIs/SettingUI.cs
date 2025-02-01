@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Minesweeper.Common.Players;
+using Minesweeper.Common.Systems;
+using Minesweeper.Common.UIs.BaseUIs;
 using Minesweeper.Common.Utils;
 using Minesweeper.Content.Tiles;
 using System;
@@ -13,7 +15,7 @@ using Terraria.UI;
 
 namespace Minesweeper.Common.UIs
 {
-    internal class Setting : UIState
+    internal class SettingUI : UIState
     {
         public static bool Visible = false;
 
@@ -74,19 +76,19 @@ namespace Minesweeper.Common.UIs
         /// <summary>
         /// 输入框：设置宽度
         /// </summary>
-        private readonly WriteTextBox textboxSetMapWidth = new("");
+        private readonly WriteNumTextBox textboxSetMapWidth = new("");
         /// <summary>
         /// 输入框：设置高度
         /// </summary>
-        private readonly WriteTextBox textboxSetMapHeight = new("");
+        private readonly WriteNumTextBox textboxSetMapHeight = new("");
         /// <summary>
         /// 输入框：设置雷数
         /// </summary>
-        private readonly WriteTextBox textboxSetMineNum = new("");
+        private readonly WriteNumTextBox textboxSetMineNum = new("");
         /// <summary>
         /// 输入框：设置密度
         /// </summary>
-        private readonly WriteTextBox textboxSetMineDensity = new("");
+        private readonly WriteNumTextBox textboxSetMineDensity = new("");
 
         #endregion
 
@@ -440,26 +442,28 @@ namespace Minesweeper.Common.UIs
             {
                 panel.Append(labelMineDensity);
                 panel.Append(textboxSetMineDensity);
+
+                DrawPreviewSystem.Clear();
             }
         }
     }
 
     internal class SettingUISystem : ModSystem
     {
-        public Setting setting;
+        public SettingUI settingUI;
         public UserInterface userInterface;
 
         public override void Load()
         {
-            setting = new Setting();
-            setting.Activate();
+            settingUI = new SettingUI();
+            settingUI.Activate();
             userInterface = new UserInterface();
-            userInterface.SetState(setting);
+            userInterface.SetState(settingUI);
         }
 
         public override void UpdateUI(GameTime gameTime)
         {
-            if (Setting.Visible)
+            if (SettingUI.Visible)
             {
                 userInterface?.Update(gameTime);
                 //setting.Activate();
@@ -475,15 +479,15 @@ namespace Minesweeper.Common.UIs
                 // 往绘制层集合插入一个成员，第一个参数是插入的地方的索引，第二个参数是绘制层
                 layers.Insert(Index, new LegacyGameInterfaceLayer(
                     // 绘制层的名字
-                    "Test : Setting",
+                    "Test : SettingUI",
                     // 是匿名方法
                     delegate
                     {
                         //当UI开启时
-                        if (Setting.Visible)
+                        if (SettingUI.Visible)
                         {
                             //绘制UI
-                            setting.Draw(Main.spriteBatch);
+                            settingUI.Draw(Main.spriteBatch);
                         }
                         return true;
                     },

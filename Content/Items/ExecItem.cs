@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Minesweeper.Common.Players;
+using Minesweeper.Common.Systems;
 using Minesweeper.Common.UIs;
 using Minesweeper.Content.Tiles;
 using System;
@@ -20,7 +22,7 @@ namespace Minesweeper.Content.Items
         private int mineNum;
         //private bool breakable;
 
-        private bool inFreeUse;
+        private bool cancelled;
         private Point freeStart;
         private Point freeEnd;
 
@@ -32,40 +34,84 @@ namespace Minesweeper.Content.Items
 
             Item.useTime = 5;
             Item.useAnimation = 5;
-            Item.useStyle = ItemUseStyleID.Swing;
+            Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = false;
+            Item.autoReuse = true;
 
             Item.value = 0;
             Item.rare = ItemRarityID.Blue;
         }
 
-        public override bool CanUseItem(Player player)
+        public override bool? UseItem(Player player)
         {
-            // 左键
-            if (player.altFunctionUse == 0)
+            if (Main.netMode is not NetmodeID.Server && player.whoAmI == Main.myPlayer)
             {
-                if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Fixed.ToString())
+                if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Free.ToString())
+                {
+                    if (Main.mouseRight && cancelled == false)
+                    {
+                        cancelled = true;
+                        //Main.NewText("Cancel");
+                    }
+                    freeEnd = Main.MouseWorld.ToTileCoordinates();
+                    if (Main.mouseLeft)
+                    {
+                        player.itemAnimation = 8;
+                    }
+                    else
+                    {
+                        player.itemAnimation = 0;
+                        if (cancelled == false)
+                        {
+                            Main.NewText($"Generate: ({freeStart.X},{freeStart.Y}),({freeEnd.X},{freeEnd.Y})");
+                        }
+                    }
+                }
+                else if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Fixed.ToString())
                 {
                     GenerateFixedMap(player);
                 }
-                else if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Free.ToString())
-                {
-
-                }
             }
-            // 右键
-            else if (player.altFunctionUse == 2)
+            return true;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Free.ToString())
             {
-                // 切换设置界面打开关闭状态
-                if (Setting.Visible)
+                Item.autoReuse = true;
+            }
+            else if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Fixed.ToString())
+            {
+                Item.autoReuse = false;
+            }
+
+            if (player.noBuilding)
+            {
+                return false;
+            }
+
+            if (player.altFunctionUse == 2)
+            {
+                //切换设置界面打开关闭状态
+                if (SettingUI.Visible)
                 {
-                    Setting.Visible = false;
+                    SettingUI.Visible = false;
                 }
                 else
                 {
-                    Setting.Visible = true;
+                    SettingUI.Visible = true;
                 }
+                return false;
             }
+
+            if (player.GetModPlayer<MinePlayer>().MineGenerateType == EnumMineGenerateType.Fixed.ToString())
+            {
+                return true;
+            }
+
+            cancelled = false;
+            freeStart = Main.MouseWorld.ToTileCoordinates();
             return true;
         }
 
@@ -96,17 +142,12 @@ namespace Minesweeper.Content.Items
                 // 如果开启预览，就生成一个Box对象，对应绘制一个方框
                 if (player.GetModPlayer<MinePlayer>().Preview)
                 {
-                    Box.NewBox(textureT, textureF, rectangle);
-#if DEBUG
-                    //Debug，查看当前TileType
-                    int type = Main.tile[x, y].TileType;
-                    Main.NewText(type);
-#endif
+                    DrawPreviewSystem.NewBox(textureT, textureF, rectangle);
                 }
                 // 反之则清空Box对象
                 else
                 {
-                    Box.Clear();
+                    DrawPreviewSystem.Clear();
                 }
             }
         }
@@ -122,7 +163,7 @@ namespace Minesweeper.Content.Items
             // 当前没有手持该物品时也清空Box对象
             if (Main.LocalPlayer.HeldItem.type != Type)
             {
-                Box.Clear();
+                DrawPreviewSystem.Clear();
             }
         }
 

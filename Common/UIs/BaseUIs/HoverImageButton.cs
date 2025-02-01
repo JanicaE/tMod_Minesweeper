@@ -4,12 +4,16 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 
-namespace Minesweeper.Common.UIs
+namespace Minesweeper.Common.UIs.BaseUIs
 {
-    // 允许按钮在悬停时显示文本工具提示
+    /// <summary>
+    /// 允许按钮在悬停时显示文本工具提示
+    /// </summary>
     internal class HoverImageButton : UIImageButton
     {
-        // 悬停时将显示的工具提示文本
+        /// <summary>
+        /// 悬停时将显示的工具提示文本
+        /// </summary>
         public LocalizedText hoverText;
 
         public HoverImageButton(Asset<Texture2D> texture) : base(texture)

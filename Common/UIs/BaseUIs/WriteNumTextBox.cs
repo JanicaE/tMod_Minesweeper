@@ -4,9 +4,12 @@ using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
-namespace Minesweeper.Common.UIs
+namespace Minesweeper.Common.UIs.BaseUIs
 {
-    internal class WriteTextBox : UITextBox
+    /// <summary>
+    /// 只可输入数字的输入框
+    /// </summary>
+    internal class WriteNumTextBox : UITextBox
     {
         private bool Enabled = false;
         private string text;
@@ -33,7 +36,7 @@ namespace Minesweeper.Common.UIs
             Keys.Back,
         ];
 
-        public WriteTextBox(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        public WriteNumTextBox(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
         {
         }
 

@@ -17,6 +17,9 @@ namespace Minesweeper.Common.Players
         public bool Breakable;
 
         public int Remain;
+        /// <summary>
+        /// SettingUI是否加载过数据
+        /// </summary>
         public bool UILoadData;
 
         public override void Initialize()
@@ -73,7 +76,13 @@ namespace Minesweeper.Common.Players
 
     internal enum EnumMineGenerateType
     {
+        /// <summary>
+        /// 固定宽高
+        /// </summary>
         Fixed,
+        /// <summary>
+        /// 自由框选
+        /// </summary>
         Free
     }
 }

@@ -3,11 +3,13 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
-namespace Minesweeper.Common.UIs
+namespace Minesweeper.Common.UIs.BaseUIs
 {
-    // 允许拖动面板
-    // 确保面板在被拖到外面或屏幕大小调整时会反弹回边界
-    // UIPanel不会阻止玩家在单击鼠标时使用项目
+    /// <summary>
+    /// <br>允许拖动面板</br>
+    /// <br>确保面板在被拖到外面或屏幕大小调整时会反弹回边界</br>
+    /// <br>UIPanel不会阻止玩家在单击鼠标时使用项目</br>
+    /// </summary> 
     public class DragablePanel : UIPanel
     {
         private Vector2 offset;  // 在拖动时存储与UIPanel左上角的偏移量        
