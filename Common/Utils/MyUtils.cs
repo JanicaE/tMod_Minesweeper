@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Minesweeper.Common.Configs;
 using Minesweeper.Content.Tiles;
 using ReLogic.Content;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
@@ -15,17 +16,6 @@ namespace Minesweeper.Common.Utils
         /// 获取配置
         /// </summary>
         public static CommonConfig Config;
-
-        /// <summary>
-        /// Minesweeper相关物块
-        /// </summary>
-        public static int[] MineTiles =>
-        [
-            ModContent.TileType<Blank_Known>(),
-            ModContent.TileType<Blank_Unknown>(),
-            ModContent.TileType<Mine_Known>(),
-            ModContent.TileType<Mine_Unknown>(),
-        ];
 
         /// <summary>
         /// 返回周围8个位置坐标的数组

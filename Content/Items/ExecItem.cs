@@ -249,6 +249,11 @@ namespace Minesweeper.Content.Items
                     Tile tile = Main.tile[i, j];
                     tile.TileFrameX = 0;
                     tile.TileFrameY = 0;
+                    Point point = new(i, j);
+                    if (!MinePoints.Contains(point))
+                    {
+                        MinePoints.Add(point);
+                    }
                 }
             }
 

@@ -1,4 +1,6 @@
-﻿using Minesweeper.Content.Tiles;
+﻿using Microsoft.Xna.Framework;
+using Minesweeper.Content.Tiles;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -42,6 +44,18 @@ namespace Minesweeper.Common.Players
                 }
             }
             UILoadData = false;
+
+            MinePoints = [];
+            for (int i = 0; i < Main.maxTilesX; i++)
+            {
+                for (int j = 0; j < Main.maxTilesY; j++)
+                {
+                    if (MineTiles.Contains(Main.tile[i, j].TileType))
+                    {
+                        MinePoints.Add(new Point(i, j));
+                    }
+                }
+            }
         }
 
         public override void SaveData(TagCompound tag)
@@ -63,14 +77,14 @@ namespace Minesweeper.Common.Players
                 MineDensity = (int)tag["MineDensity"];
                 MineGenerateType = (string)tag["FixedOrFree"];
             }
-            catch 
+            catch
             {
                 MapWidth = 10;
                 MapHeight = 10;
                 MineNum = 10;
                 MineDensity = 10;
                 MineGenerateType = EnumMineGenerateType.Fixed.ToString();
-            }            
+            }
         }
     }
 

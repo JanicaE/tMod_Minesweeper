@@ -266,17 +266,22 @@ namespace Minesweeper.Common.UIs
 
         private void ButtonClear_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            Player player = Main.LocalPlayer;
-            for (int i = 0; i < Main.maxTilesX; i++)
+            //for (int i = 0; i < Main.maxTilesX; i++)
+            //{
+            //    for (int j = 0; j < Main.maxTilesY; j++)
+            //    {
+            //        if (MineTiles.Contains(Main.tile[i, j].TileType))
+            //        {
+            //            WorldGen.KillTile(i, j);
+            //        }
+            //    }
+            //}
+            foreach (Point point in MinePoints)
             {
-                for (int j = 0; j < Main.maxTilesY; j++)
-                {
-                    if (MineTiles.Contains(Main.tile[i, j].TileType))
-                    {
-                        WorldGen.KillTile(i, j);
-                    }
-                }
+                WorldGen.KillTile(point.X, point.Y);
             }
+            MinePoints.Clear();
+            Player player = Main.LocalPlayer;
             player.GetModPlayer<MinePlayer>().Remain = 0;
         }
 
@@ -284,27 +289,21 @@ namespace Minesweeper.Common.UIs
         {
             Player player = Main.LocalPlayer;
             int Mine = 0;
-            List<Point> point = [];
 
-            for (int i = 0; i < Main.maxTilesX; i++)
+            foreach (Point point in MinePoints)
             {
-                for (int j = 0; j < Main.maxTilesY; j++)
+                // 计算区域内雷数
+                if (Main.tile[point].TileType == ModContent.TileType<Mine_Unknown>() ||
+                    Main.tile[point].TileType == ModContent.TileType<Mine_Known>())
                 {
-                    // 计算区域内雷数
-                    if (Main.tile[i, j].TileType == ModContent.TileType<Mine_Unknown>() ||
-                        Main.tile[i, j].TileType == ModContent.TileType<Mine_Known>())
-                    {
-                        Mine++;
-                    }
-                    if (MineTiles.Contains(Main.tile[i, j].TileType))
-                    {
-                        // 替换物块
-                        WorldGen.PlaceTile(i, j, ModContent.TileType<Blank_Unknown>());
-                        Tile tile = Main.tile[i, j];
-                        tile.TileFrameX = 0;
-                        // 将坐标存入数组，保存当前雷区的位置
-                        point.Add(new Point(i, j));
-                    }
+                    Mine++;
+                }
+                if (MineTiles.Contains(Main.tile[point].TileType))
+                {
+                    // 替换物块
+                    WorldGen.PlaceTile(point.X, point.Y, ModContent.TileType<Blank_Unknown>());
+                    Tile tile = Main.tile[point];
+                    tile.TileFrameX = 0;
                 }
             }
 
@@ -315,17 +314,17 @@ namespace Minesweeper.Common.UIs
             {
                 while (!MineSet)
                 {
-                    int i = random.Next(0, point.Count);
-                    if (Main.tile[point[i]].TileType == ModContent.TileType<Blank_Unknown>())
+                    int i = random.Next(0, MinePoints.Count);
+                    if (Main.tile[MinePoints[i]].TileType == ModContent.TileType<Blank_Unknown>())
                     {
-                        WorldGen.PlaceTile(point[i].X, point[i].Y, ModContent.TileType<Mine_Unknown>());
+                        WorldGen.PlaceTile(MinePoints[i].X, MinePoints[i].Y, ModContent.TileType<Mine_Unknown>());
                         MineSet = true;
                     }
                 }
                 MineSet = false;
             }
 
-            player.GetModPlayer<MinePlayer>().Remain = point.Count - Mine;
+            player.GetModPlayer<MinePlayer>().Remain = MinePoints.Count - Mine;
         }
 
         #region 弃用
